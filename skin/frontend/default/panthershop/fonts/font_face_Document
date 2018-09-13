@@ -1,0 +1,142 @@
+
+
+@font-face {
+    font-family: 'HelveticaRegular';
+    src: url('fonts/helvetica-webfont.eot');
+    src: url('fonts/helvetica-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helvetica-webfont.woff') format('woff'),
+         url('fonts/helvetica-webfont.ttf') format('truetype'),
+         url('fonts/helvetica-webfont.svg#HelveticaRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'HelveticaBold';
+    src: url('fonts/helvetica_bold-webfont.eot');
+    src: url('fonts/helvetica_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helvetica_bold-webfont.woff') format('woff'),
+         url('fonts/helvetica_bold-webfont.ttf') format('truetype'),
+         url('fonts/helvetica_bold-webfont.svg#HelveticaBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'HelveticaNeueRegular';
+    src: url('fonts/helveticaneue.eot');
+    src: url('fonts/helveticaneue.eot') format('embedded-opentype'),
+         url('fonts/helveticaneue.woff') format('woff'),
+         url('fonts/helveticaneue.ttf') format('truetype'),
+         url('fonts/helveticaneue.svg#HelveticaNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HelveticaNeueBold';
+    src: url('fonts/helvetica-neue-bold.eot');
+    src: url('fonts/helvetica-neue-bold.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helvetica-neue-bold.woff') format('woff'),
+         url('fonts/helvetica-neue-bold.ttf') format('truetype'),
+         url('fonts/helvetica-neue-bold.svg#HelveticaNeueBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'HelveticaNeueLTRegular';
+    src: url('fonts/helveticaneuelt-thincond-webfont.eot');
+    src: url('fonts/helveticaneuelt-thincond-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helveticaneuelt-thincond-webfont.woff') format('woff'),
+         url('fonts/helveticaneuelt-thincond-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    }
+    
+@font-face {
+	font-family: 'HelveticaNeueLTBoldCond';
+	src: url('fonts/helveticaneuelt-boldcond.eot');
+	src: url('fonts/helveticaneuelt-boldcond.eot?#iefix') format('embedded-opentype'),
+			url('fonts/helveticaneuelt-boldcond.woff') format('woff'),
+			url('fonts/helveticaneuelt-boldcond.ttf') format('truetype'),
+			url('fonts/helveticaneuelt-boldcond.svg#HelveticaNeueLTBoldCond') format('svg');
+	font-weight: normal;
+	font-style: normal;
+
+}
+    
+@font-face {
+    font-family: 'HelveticaNeueCondLight';
+    src: url('fonts/helveticaneue-cond-light-webfont.eot');
+    src: url('fonts/helveticaneue-cond-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helveticaneue-cond-light-webfont.woff') format('woff'),
+         url('fonts/helveticaneue-cond-light-webfont.ttf') format('truetype'),
+         url('fonts/helveticaneue-cond-light-webfont.svg#HelveticaNeueCondLight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'HelveticaNeuecondoblRegular';
+    src: url('fonts/helveticaneue-condensedobl.eot');
+    src: url('fonts/helveticaneue-condensedobl.eot') format('embedded-opentype'),
+         url('fonts/helveticaneue-condensedobl.woff') format('woff'),
+         url('fonts/helveticaneue-condensedobl.ttf') format('truetype'),
+         url('fonts/helveticaneue-condensedobl.svg#HelveticaNeuecondoblRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HelveticaNeueLTStd57CondensedOblique';
+    src: url('fonts/helveticaneueltstd-cno.eot');
+    src: url('fonts/helveticaneueltstd-cno.eot') format('embedded-opentype'),
+         url('fonts/helveticaneueltstd-cno.woff') format('woff'),
+         url('fonts/helveticaneueltstd-cno.ttf') format('truetype'),
+         url('fonts/helveticaneueltstd-cno.svg#HelveticaNeueLTStd57CondensedOblique') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'helveticaNeueLTMediumRegular';
+    src: url('fonts/helveticaneuelt-medium.eot');
+    src: url('fonts/helveticaneuelt-medium.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helveticaneuelt-medium.woff') format('woff'),
+         url('fonts/helveticaneuelt-medium.ttf#helveticaNeueLTMediumRegular') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HelveticaNeueCondRegular';
+    src: url('fonts/helveticaneue-condensed.eot');
+    src: url('fonts/helveticaneue-condensed.eot') format('embedded-opentype'),
+         url('fonts/helveticaneue-condensed.woff') format('woff'),
+         url('fonts/helveticaneue-condensed.ttf') format('truetype'),
+         url('fonts/helveticaneue-condensed.svg#HelveticaNeueCondRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'helvetica_ce_55_romanregular';
+    src: url('fonts/helvetica-neue-ce-55-roman-1361522164-webfont.eot');
+    src: url('fonts/helvetica-neue-ce-55-roman-1361522164-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/helvetica-neue-ce-55-roman-1361522164-webfont.woff') format('woff'),
+         url('fonts/helvetica-neue-ce-55-roman-1361522164-webfont.ttf') format('truetype'),
+         url('fonts/helvetica-neue-ce-55-roman-1361522164-webfont.svg#helvetica_ce_55_romanregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'sans_culottesregular';
+    src: url('fonts/sansc___-webfont.eot');
+    src: url('fonts/sansc___-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/sansc___-webfont.woff') format('woff'),
+         url('fonts/sansc___-webfont.ttf') format('truetype'),
+         url('fonts/sansc___-webfont.svg#sans_culottesregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+

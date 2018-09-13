@@ -1,0 +1,172 @@
+
+<div class="banner_area">
+    <div class="banner">
+        <!--Home banner start-->
+        <div class="slider-nav">
+            <!--<span id="prev2"></span>-->
+            <!--<span id="next2"></span>-->
+        </div>
+        
+        <ul class="slider-top" id="home_slider">
+          
+            <!--banner extention slider image dynamic fetch start-->  
+            <?php
+           
+                    $collection = Mage::getModel('banner/banner')->getCollection();
+                    foreach ($collection as $col)
+                    {
+                        if($col->getStatus()==1)
+                        {
+                    
+            ?>
+                
+                        <li><a class="banner_url" href="<?php echo $col->getUrl();?>"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) .$col->getfilename()?>" alt="Panther Shop" title="Panther Shop"  /></a></li>
+                
+            
+            <?php
+                        }
+                    } 
+            ?>
+            <!--banner extention slider image dynamic fetch end-->
+            
+            
+        </ul>
+        
+        
+        
+        
+        
+        <!--Home banner end-->
+    </div>
+    <div class="banner_right">
+        <img src="<?php echo $this->getSkinUrl('images/right_1.jpg');?>" alt="" />
+    </div>
+</div>
+<div class="category-products">
+    <div class="category-title">
+        <h1>TOP SELLING</h1>
+    </div>
+    <ul class="products-grid first odd">
+        <li class="item first">
+            <a href="#" class="product-image"><img src="<?php echo $this->getSkinUrl('images/1.png');?>" alt="" /></a>
+            <h2 class="product-name"><a href="#">PRODUCT NAME</a></h2>
+            <div class="desc">
+                <p>Frist Line Description</p>
+                <p> Second Line Description</p>
+                <a href="#" class="link-learn">Read More</a>
+            </div>
+            <div class="price-box">                                                                    
+                <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price" id="old-price-52">$129.99</span>
+                </p>                                    
+                <p class="special-price">
+                    <span class="price-label">Members:</span>
+                    <span class="price" id="product-price-52"> $99.99</span>
+                </p>  
+            </div>
+            <div class="actions">                                        
+                <ul class="add-to-links">
+                    <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                    <li><a href="#" class="link-compare">Add to Compare</a></li>
+                </ul>
+                <button type="button" class="button btn-cart">
+                    <span>
+                        <span>Add to Cart</span>
+                    </span>
+                </button>
+            </div>
+        </li>
+        <li class="item">
+            <a href="#" class="product-image"><img src="<?php echo $this->getSkinUrl('images/1.png');?>" alt="" /></a>
+            <h2 class="product-name"><a href="#">PRODUCT NAME</a></h2>
+            <div class="desc">
+                <p>Frist Line Description</p>
+                <p> Second Line Description</p>
+                <a href="#" class="link-learn">Read More</a>
+            </div>
+            <div class="price-box">                                                                    
+                <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price" id="old-price-52">$129.99</span>
+                </p>                                    
+                <p class="special-price">
+                    <span class="price-label">Members:</span>
+                    <span class="price" id="product-price-52"> $99.99</span>
+                </p>  
+            </div>
+            <div class="actions">                                        
+                <ul class="add-to-links">
+                    <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                    <li><a href="#" class="link-compare">Add to Compare</a></li>
+                </ul>
+                <button type="button" class="button btn-cart">
+                    <span>
+                        <span>Add to Cart</span>
+                    </span>
+                </button>
+            </div>
+        </li>
+        <li class="item">
+            <a href="#" class="product-image"><img src="<?php echo $this->getSkinUrl('images/1.png');?>" alt="" /></a>
+            <h2 class="product-name"><a href="#">PRODUCT NAME</a></h2>
+            <div class="desc">
+                <p>Frist Line Description</p>
+                <p> Second Line Description</p>
+                <a href="#" class="link-learn">Read More</a>
+            </div>
+            <div class="price-box">                                                                    
+                <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price" id="old-price-52">$129.99</span>
+                </p>                                    
+                <p class="special-price">
+                    <span class="price-label">Members:</span>
+                    <span class="price" id="product-price-52"> $99.99</span>
+                </p>  
+            </div>
+            <div class="actions">                                        
+                <ul class="add-to-links">
+                    <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                    <li><a href="#" class="link-compare">Add to Compare</a></li>
+                </ul>
+                <button type="button" class="button btn-cart">
+                    <span>
+                        <span>Add to Cart</span>
+                    </span>
+                </button>
+            </div>
+        </li>
+        <li class="item last">
+            <a href="#" class="product-image"><img src="<?php echo $this->getSkinUrl('images/1.png');?>" alt="" /></a>
+            <h2 class="product-name"><a href="#">PRODUCT NAME</a></h2>
+            <div class="desc">
+                <p>Frist Line Description</p>
+                <p> Second Line Description</p>
+                <a href="#" class="link-learn">Read More</a>
+            </div>
+            <div class="price-box">                                                                    
+                <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price" id="old-price-52">$129.99</span>
+                </p>                                    
+                <p class="special-price">
+                    <span class="price-label">Members:</span>
+                    <span class="price" id="product-price-52"> $99.99</span>
+                </p>  
+            </div>
+            <div class="actions">                                        
+                <ul class="add-to-links">
+                    <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                    <li><a href="#" class="link-compare">Add to Compare</a></li>
+                </ul>
+                <button type="button" class="button btn-cart">
+                    <span>
+                        <span>Add to Cart</span>
+                    </span>
+                </button>
+            </div>
+        </li>
+    </ul>
+</div>
+            

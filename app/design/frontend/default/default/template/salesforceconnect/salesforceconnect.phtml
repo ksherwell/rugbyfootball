@@ -1,0 +1,27 @@
+<div class="main_con">
+    <div class="page_head">Sales Force</div>
+    <form action="<?php echo $this->getURL('salesforceconnect/index/index'); ?>" method="post" id="sf_form" name="sf_form">
+        <div class="uname_area">
+            <div class="label_head">
+                <?php echo $this->__("User Name"); ?> :
+            </div>
+            <div class="input_area">
+                <input type="text" name="uname" id="uname" value="" />
+            </div>
+        </div>
+        <div class="pass_area">
+            <div class="label_head">
+                <?php echo $this->__("Password"); ?> :
+            </div>
+            <div class="input_area">
+                <input type="password" name="pass" id="pass" value="" />
+            </div>
+        </div>
+        <div class="sub_area">
+            <div class="button_con">
+                <input type="submit" name="sf_sub" id="sf_sub" value="<?php echo $this->__("Login"); ?>" />
+            </div>
+            
+        </div>
+    </form>
+</div>

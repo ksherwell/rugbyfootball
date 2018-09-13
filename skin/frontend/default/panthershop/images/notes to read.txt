@@ -1,0 +1,3 @@
+Copy jquery.bxslider.css to \js\all_custom_js\home_slider_js
+Copy styles.css to \skin\frontend\default\panthershop\css
+For images, just overwrite with the latest images attached 

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <membershippackage_adminhtml_membershippackage_index>
+        <reference name="content">
+            <block type="membershippackage/adminhtml_membershippackage" name="membershippackage" />
+        </reference>
+    </membershippackage_adminhtml_membershippackage_index>
+</layout>

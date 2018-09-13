@@ -1,0 +1,80 @@
+<?php
+/**
+ * Custom tab template
+ */
+?>
+<div class="file_upload_main_con">
+ <div class="im_upl">
+   <span class="cap_txt"><?php echo $this->__("Image :");?> </span>
+     <span class="inp_t">
+      <input type="file" name="custom_image" />
+     </span>
+ </div>
+ <div class="di_or">
+  <span class="cap_txt">
+   <?php echo $this->__("Display Order :");?>
+  </span>
+  <span class="inp_t">
+   <input type="text" name="disp_ord" id="disp_ord" />
+  </span>
+ </div>
+ 
+</div>
+
+<div class="display_con">
+ <table border="0" cellpadding="0" cellspacing="0" class="disply_tab" width="100%">
+  <tr>
+   <td class="im_he">
+     Image Name
+   </td>
+   <td class="display_ord">
+     Display Order
+   </td>
+   <td class="ac_he">
+    Remove
+   </td>
+  </tr>
+  <?php
+        $path = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."threesixtyimages". DS;
+        $current_product = Mage::registry('current_product');
+        
+        
+       
+  
+        $temptableThreeSixtyImagesGrid=Mage::getSingleton('core/resource')->getTableName('three_sixty_images');
+        $sqlThreeSixtyImagesGrid="select * from ".$temptableThreeSixtyImagesGrid." where product_id='".$current_product->getId()."' order by display_order asc";
+        try {
+        $chkThreeSixtyImagesGrid = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchAll($sqlThreeSixtyImagesGrid);
+        } catch (Exception $e){
+        
+        }
+        
+        //echo "<pre>";
+        
+        //print_r($chkThreeSixtyImagesGrid);
+        
+        foreach($chkThreeSixtyImagesGrid as $key=>$val)
+        {
+  ?>
+          <tr>
+          
+               <td class="image_disp">
+                <img src="<?php echo $path.$val["image_name"]; ?>" />
+               </td>
+               <td class="dsp_ord">
+                 <?php echo $val["display_order"]; ?>
+               </td>
+               <td class="action_disp">
+                <input type="checkbox" name="del_im[]" value="<?php echo $val["id"];?>" />
+               </td>
+          
+          </tr>
+  <?php
+        }
+  ?>
+  
+  
+  
+ </table>
+ 
+</div>

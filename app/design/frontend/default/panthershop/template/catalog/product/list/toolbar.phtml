@@ -1,0 +1,162 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @see Mage_Catalog_Block_Product_List_Toolbar
+ */
+?>
+<?php if($this->getCollection()->getSize()): ?>
+<div class="toolbar">
+    <div class="pager">
+        <div class="limiter">
+          <p class="amount">
+              <?php if($this->getLastPageNum()>1): ?>
+              <!--Custom code for pagination display start-->
+                  <strong><?php echo $this->__('%s Item(s)', $this->getTotalNum()) ?></strong>
+                  <?php /*echo $this->__('Items %s to %s of %s total', $this->getFirstNum(), $this->getLastNum(), $this->getTotalNum()) */?>
+              <!--Custom code for pagination display end-->
+              <?php else: ?>
+                  <strong><?php echo $this->__('%s Item(s)', $this->getTotalNum()) ?></strong>
+              <?php endif; ?>
+          </p>
+            <!--Custom start for pagination display and custom drop down-->
+                <div class="sort-by">
+                    <?php
+                        $sort_count=0;
+                        $tot_opt=count($this->getAvailableOrders());
+                    ?>
+                    <ul class="cu_sorter">
+                        <?php
+                            foreach($this->getAvailableOrders() as $_key=>$_order):
+                            $sort_count++;
+                            if($sort_count==$tot_opt)
+                            {
+                                $nw_cl="last";
+                            }
+                            else
+                            {
+                                $nw_cl="";
+                            }
+                        ?>
+                            <li class="<?php if($this->isOrderCurrent($_key)): ?> active<?php endif; ?> <?php echo $nw_cl; ?>">
+
+                                <!--Custome for asc or desc start-->
+                                 <?php
+                                    $curr_ord="";
+                                    if($this->getCurrentDirection() == 'desc'):
+                                        $curr_ord="asc";
+
+                                    else:
+                                        $curr_ord="desc";
+
+                                    endif;
+                                 ?>
+
+
+                                <a href="javascript:void(0);" onclick="setLocation('<?php echo $this->getOrderUrl($_key, $curr_ord) ?>');"><?php echo $this->__($_order) ?></a>
+                            </li>
+                        <?php
+                            endforeach;
+                        ?>
+                    </ul>
+                    <?php /*if($this->getCurrentDirection() == 'desc'): ?>
+                        <a href="<?php echo $this->getOrderUrl(null, 'asc') ?>" title="<?php echo $this->__('Set Ascending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_desc_arrow.gif') ?>" alt="<?php echo $this->__('Set Ascending Direction') ?>" class="v-middle" /></a>
+                    <?php else: ?>
+                        <a href="<?php echo $this->getOrderUrl(null, 'desc') ?>" title="<?php echo $this->__('Set Descending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_asc_arrow.gif') ?>" alt="<?php echo $this->__('Set Descending Direction') ?>" class="v-middle" /></a>
+                    <?php endif; */ ?>
+                </div>
+
+
+
+
+                <div class="pager_drop_down">
+                  <div class="dropdown-right-pager">
+                    <label><?php echo $this->__('View Per Page : ') ?></label>
+                    <?php /*
+                    <select onchange="setLocation(this.value)">
+                    <?php foreach ($this->getAvailableLimit() as  $_key=>$_limit): ?>
+                        <option value="<?php echo $this->getLimitUrl($_key) ?>"<?php if($this->isLimitCurrent($_key)): ?> selected="selected"<?php endif ?>>
+                            <?php echo $_limit ?>
+                        </option>
+                    <?php endforeach; ?>
+                    </select>
+                    */ ?>
+
+                    <?php
+                        $tmp_arr=array();
+
+                        $tmp_arr=$this->getAvailableLimit();
+
+
+                       foreach ($this->getAvailableLimit() as  $_key=>$_limit):
+                            if($this->isLimitCurrent($_key)):
+                                $curr_val=$tmp_arr[$_key];
+                            endif;
+                        endforeach;
+                    ?>
+
+                    <span class="drop_val_con" id="page_val_con"><?php echo $curr_val; ?></span>
+
+                    <ul class="drop_val_list" id="page_val_list" style="display:none;">
+
+                        <?php
+
+                            foreach ($this->getAvailableLimit() as  $_key=>$_limit):
+
+
+                            if($this->isLimitCurrent($_key))
+                            {
+                                $curr_item="active";
+                            }
+                            else
+                            {
+                                $curr_item="";
+                            }
+
+                        ?>
+                            <li class="pg_list <?php echo $curr_item; ?>" alt="<?php echo $this->getLimitUrl($_key) ?>">
+                                <?php echo $_limit ?>
+                            </li>
+                        <?php
+                            endforeach;
+                        ?>
+                    </ul>
+                  </div>
+
+                </div>
+
+            <!--Custom end for pagination display and custom drop down-->
+        </div>
+
+        <?php echo $this->getPagerHtml() ?>
+
+    </div>
+
+</div>
+<?php endif ?>

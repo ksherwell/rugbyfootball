@@ -1,0 +1,17 @@
+<?php $login = Mage::getSingleton( 'customer/session' )->isLoggedIn(); //Check if User is Logged In
+    if($login)
+    {
+        if(Mage::getSingleton('customer/session')->getCustomerGroupId()==2)
+        {
+        ?>
+           <div class="custom_right_txt_div">
+            <div class="first_txt">
+                <?php echo $this->__("You are signed in as a member"); ?>
+            </div>
+            <div class="second_txt">
+                <?php echo $this->__("As a Panthers member you have access to members only savings!"); ?>
+            </div>
+        </div>
+        <?php
+        }
+    }?>

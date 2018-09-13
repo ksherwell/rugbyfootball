@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Artis_Salesforceconnect>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Artis_Salesforceconnect>
+    </modules>
+</config> 

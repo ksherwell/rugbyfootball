@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config>
+
+    <modules>
+        <NRL_SalesforceMemberLogin>
+            <version>
+                0.1.0
+            </version>
+        </NRL_SalesforceMemberLogin>
+    </modules>
+
+    <frontend>
+        <routers>
+
+            <nrlmemberlogin>
+                <use>standard</use>
+                <args>
+                    <module>NRL_SalesforceMemberLogin</module>
+                    <frontName>nrlmemberlogin</frontName>
+                </args>
+            </nrlmemberlogin>
+
+        </routers>
+    </frontend>
+
+</config>

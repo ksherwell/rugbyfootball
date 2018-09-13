@@ -1,0 +1,81 @@
+<?php
+class Artis_Salesforceconnect_IndexController extends Mage_Core_Controller_Front_Action
+{
+    public function indexAction()
+    {
+	
+	
+	if($this->getRequest()->getParam('sf_sub')!="")
+	{
+	    $uname=$this->getRequest()->getParam('uname');
+	    $pass=$this->getRequest()->getParam('pass');
+	    $SECURITY_TOKEN="Utq3fiynHm9a9Roo1XEBEUwLM";
+	    
+	    
+	    $base_path=Mage::getBaseDir('base');
+	    require_once ($base_path.'/salesforce/soapclient/SforcePartnerClient.php');
+	
+	    $mySforceConnection = new SforcePartnerClient();
+	    $mySforceConnection->createConnection($base_path."/salesforce/soapclient/partner.wsdl.xml");
+	    $mySforceConnection->login($uname, $pass.$SECURITY_TOKEN);
+	    
+	    $query = "SELECT Id, FirstName, LastName, Phone from Contact";
+	    $response = $mySforceConnection->query($query);
+	    
+	    echo "Results of query '$query'<br/><br/>\n";
+	    foreach ($response->records as $record) {
+		echo $record->Id . ": " . $record->FirstName . " "
+		    . $record->LastName . " " . $record->Phone . "<br/>\n";
+	    }
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    	
+    	/*
+    	 * Load an object by id 
+    	 * Request looking like:
+    	 * http://site.com/salesforceconnect?id=15 
+    	 *  or
+    	 * http://site.com/salesforceconnect/id/15 	
+    	 */
+    	/* 
+		$salesforceconnect_id = $this->getRequest()->getParam('id');
+
+  		if($salesforceconnect_id != null && $salesforceconnect_id != '')	{
+			$salesforceconnect = Mage::getModel('salesforceconnect/salesforceconnect')->load($salesforceconnect_id)->getData();
+		} else {
+			$salesforceconnect = null;
+		}	
+		*/
+		
+		 /*
+    	 * If no param we load a the last created item
+    	 */ 
+    	/*
+    	if($salesforceconnect == null) {
+			$resource = Mage::getSingleton('core/resource');
+			$read= $resource->getConnection('core_read');
+			$salesforceconnectTable = $resource->getTableName('salesforceconnect');
+			
+			$select = $read->select()
+			   ->from($salesforceconnectTable,array('salesforceconnect_id','title','content','status'))
+			   ->where('status',1)
+			   ->order('created_time DESC') ;
+			   
+			$salesforceconnect = $read->fetchRow($select);
+		}
+		Mage::register('salesforceconnect', $salesforceconnect);
+		*/
+
+			
+		$this->loadLayout();     
+		$this->renderLayout();
+    }
+}

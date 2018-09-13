@@ -1,0 +1,341 @@
+<div class="mini_poppup_list_area">
+    <ul>
+        <li><a href="/wishlist/" class="wishlist">Wishlist</a></li>
+        <!-- <li><a href="#" class="compare">Compare</a></li> -->
+        <li><a href="/checkout/cart/" class="cart">Shopping Cart</a></li>
+    </ul>
+</div>
+
+<div class="poppup_list_area">
+            <div class="fot_btn">
+                <div class="plus">
+                    <a href="javascript:void(0);" id="open_up"></a>
+                </div>
+                <div class="minus">
+                    <a href="javascript:void(0);" id="close_down"></a>
+                </div>
+            </div>
+            <div class="poppup_list_head">
+                
+                <!-- Fetch wishlist item number start-->
+                <?php
+                     $wishListmain = Mage::getModel('wishlist/wishlist')->loadByCustomer(Mage::getSingleton('customer/session')->getCustomer());
+                     $customerId=$wishListmain->getCustomerId();
+                     $collection_wish=Mage::getModel('wishlist/item')->getCollection()->addCustomerIdFilter($customerId);
+                     
+                     $_count_wish=count($collection_wish);
+                ?>
+                <h2 class="wish_head"> <?php echo $this->__("MY WISHLIST"); ?> (<?php echo $_count_wish; ?>) </h2>
+                
+                <!-- Fetch wishlist item number end-->
+                
+                
+                <!-- Fetch compare item number start-->
+                <?php
+                    $_helper = $this->helper('catalog/product_compare');
+                    $_items = $_helper->getItemCount();
+                ?>
+                <h2 class="compare_head"> <?php echo $this->__("COMPARE PRODUCT"); ?> (<?php echo $_items;?>) </h2>
+                
+                <!-- Fetch compare item number end-->
+                
+                <!-- Fetch cart item number start-->
+                <?php
+                    $cart_item_no = Mage::helper('checkout/cart')->getCart()->getItemsCount();
+                ?>
+                
+                <h2 class="shopping_head"> <?php echo $this->__("MY SHOPPING CART"); ?> (<?php echo $cart_item_no; ?>) </h2>
+                
+                <!-- Fetch cart item number end-->
+            </div>
+            <?php
+                $wishList = Mage::getModel('wishlist/wishlist')->loadByCustomer(Mage::getSingleton('customer/session')->getCustomer());
+                $_count_wish=count($collection_wish);
+               
+               
+            ?>
+            <ul class="poppup_list">
+                <li class="wish_list">
+                    <div class="no-product" <?php if($_count_wish<1){ echo 'style="display:block;"';}else{ echo 'style="display:none;"'; }?> >
+                        <h3>NO ITEMS HAVE BEEN ADDED</h3>
+                        <p class="item_add">
+                            To add an item simply click on any list icon:
+                            <a href="#" class="item_icon">
+                                <img src="<?php echo $this->getSkinUrl("images/little_wish.png");?>" alt="" />
+                            </a>
+                        </p>
+                    </div>
+                    <div class="have-product" <?php if($_count_wish>0){ echo 'style="display:block;"';}else{ echo 'style="display:none;"'; }  ?>>
+                            
+                            <div class="slider-nav-cart">
+                               <span id="prev_wish"></span>
+                               <span id="next_wish"></span>
+                           </div>
+                           <ul class="foot-productbox" id="footer_slider_wish">
+                               <?php
+                               
+                               
+                                   foreach($collection_wish as $item)
+                                   {
+                                    
+                               ?>
+                               
+                                                <li>
+                                                    <div class="pic">
+                                                        <?php
+                                                        
+                                                            $_newProduct = Mage::getModel('catalog/product')->load($item->getProductId());
+                                                            $_wishRemoveUrl=$this->helper('wishlist')->getRemoveUrl($item);
+                                                            $_addtocarturl=Mage::helper('checkout/cart')->getAddUrl($_newProduct);
+                                                            
+                                                            
+                                                        ?>
+                                                        <a href="<?php echo $_newProduct->getProductUrl(); ?>"><img src="<?php echo Mage::helper('catalog/image')->init($_newProduct, 'image')->resize(69); ?>" /></a>
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="det">
+                                                        <h1><a href="<?php echo $_newProduct->getProductUrl(); ?>"><?php echo  $item->getName(); ?></a></h1>
+                                                        <span>
+                                                            <div class="cus_price_area_one_slider">                    
+                                                                <?php echo $this->getPriceHtml($_newProduct, true) ?>
+                                                                <div class="mem_price">
+                                                                        <p class="mem">                                
+                                                                            <?php
+                                                                                $_coreHelper = $this->helper('core');
+                                                                                
+                                                                            
+                                                                                $product = Mage::getModel('catalog/product')->load($_newProduct->getId());
+                                                                                $groupPrices = $product->getData('group_price');
+                                                                                //print_r($groupPrices);
+                                                                                if($groupPrices[0]["price"]!="")
+                                                                                {
+                                                                                    echo $this->__("MEMBERS ");
+                                                                                    echo $_coreHelper->currency($groupPrices[0]["price"], true, true);
+                                                                                }
+                                                                                
+                                                                            ?>
+                                                                        </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            
+                                                            
+                                                        </span>
+                                                    </div>
+                                                    <div class="link">
+                                                        <a class="det" href="<?php echo $_addtocarturl; ?>"><?php echo $this->__("Add to cart"); ?></a>
+                                                        
+                                                        <a class="del" href="<?php echo $_wishRemoveUrl; ?>"><?php echo $this->__("Delete"); ?></a>
+                                                    </div>
+                                                </li>
+                               <?php
+                                       
+                                   }
+                               ?>
+                           </ul>
+                    </div>
+        
+                    <div class="actions">
+                        <!--<a href="" class="clear_item">Clear All Items</a>-->
+                        <ul class="add-to-links">
+                            <li>
+                                <a href="<?php echo $this->helper('wishlist')->getListUrl(); ?>" class="link-wishlist"> Add to Wishlist </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="compare_product">
+                    <?php
+                        
+                        $_helper = $this->helper('catalog/product_compare');
+                        $_items = $_helper->getItemCount();
+                        $collection_compare=$_helper->getItemCollection();
+                        
+                        
+                        
+                       
+                    
+                    
+                    
+                    ?>
+                    <div class="no-product" <?php if($_items<1){ echo 'style="display:block;"';}else{ echo 'style="display:none;"'; }?> >
+                        <h3>NO ITEMS HAVE BEEN ADDED</h3>
+                        <p class="item_add">
+                            To add an item simply click on any list icon:
+                            <a href="#" class="item_icon">
+                                <img src="<?php echo $this->getSkinUrl("images/wish_l.png");?>" alt="" />
+                            </a>
+                        </p>
+                    </div>
+                    <div class="have-product" <?php if($_items>0){ echo 'style="display:block;"';}else{ echo 'style="display:none;"'; }  ?>>
+                            
+                            <div class="slider-nav-cart">
+                               <span id="prev_compare"></span>
+                               <span id="next_compare"></span>
+                           </div>
+                           <ul class="foot-productbox" id="footer_slider_compare">
+                               <?php
+                               
+                                   foreach($collection_compare as $item)
+                                   {
+                                    
+                               ?>
+                               
+                                                <li>
+                                                    <div class="pic">
+                                                        <?php
+                                                        
+                                                            $_newProduct = Mage::getModel('catalog/product')->load($item->getProductId());
+                                                            $_compareRemoveUrl=$this->helper('catalog/product_compare')->getRemoveUrl($_newProduct);
+                                                            $_addtocarturl=Mage::helper('checkout/cart')->getAddUrl($_newProduct);
+                                                            
+                                                            
+                                                        ?>
+                                                        <a href="<?php echo $_newProduct->getProductUrl(); ?>"><img src="<?php echo Mage::helper('catalog/image')->init($_newProduct, 'image')->resize(69); ?>" /></a>
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="det">
+                                                        <h1><a href="<?php echo $_newProduct->getProductUrl(); ?>"><?php echo  $item->getName(); ?></a></h1>
+                                                        <span>
+                                                            <div class="cus_price_area_one_slider_comp">                    
+                                                                <?php echo $this->getPriceHtml($_newProduct, true) ?>
+                                                                <div class="mem_price">
+                                                                        <p class="mem">                                
+                                                                            <?php
+                                                                                $_coreHelper = $this->helper('core');
+                                                                                
+                                                                            
+                                                                                $product = Mage::getModel('catalog/product')->load($_newProduct->getId());
+                                                                                $groupPrices = $product->getData('group_price');
+                                                                                //print_r($groupPrices);
+                                                                                if($groupPrices[0]["price"]!="")
+                                                                                {
+                                                                                    echo $this->__("MEMBERS ");
+                                                                                    echo $_coreHelper->currency($groupPrices[0]["price"], true, true);
+                                                                                }
+                                                                                
+                                                                            ?>
+                                                                        </p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            
+                                                            
+                                                            
+                                                        </span>
+                                                    </div>
+                                                    <div class="link">
+                                                        <a class="det" href="<?php echo $_addtocarturl; ?>"><?php echo $this->__("Add to cart"); ?></a>
+                                                        
+                                                        <a class="del" href="<?php echo $_compareRemoveUrl; ?>"><?php echo $this->__("Delete"); ?></a>
+                                                    </div>
+                                                </li>
+                               <?php
+                                       
+                                   }
+                               ?>
+                           </ul>
+                    </div>
+                    <div class="actions">
+                        <?php
+                            //Fetch all compare product remove url
+                            $removeall_compare=$this->helper('catalog/product_compare')->getClearListUrl();
+                        ?>
+                        <a href="<?php echo $removeall_compare; ?>" class="clear_item">Clear All Items</a>
+                        <ul class="add-to-links">
+                            <li>
+                                <a href="javascript:void(0);" onclick="popWin('<?php echo Mage::helper('catalog/product_compare')->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes');" class="link-compare"> Add to Compare </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!--Cart section start-->
+                <?php
+                    $session= Mage::getSingleton('checkout/session');
+                    /*foreach($session->getQuote()->getAllItems() as $item)
+                    {
+                       $productid = $item->getProductId();
+                       $productsku = $item->getSku();
+                       $productname = $item->getName();
+                       $productqty = $item->getQty();
+                    }*/
+                    $quote = Mage::getSingleton('checkout/cart')->getQuote();
+
+                    $count_tot_item=count($session->getQuote()->getAllItems());   
+                    $subTotal =  $quote->getSubtotal();
+                    
+                ?>
+                
+                <li class="my_soppingcard">
+                    
+                    <div class="no-product" <?php if($subTotal==0 && $count_tot_item<1){ echo 'style="display:block;"';}else{ echo 'style="display:none;"'; }  ?>>
+                        <h3>NO ITEMS HAVE BEEN ADDED</h3>
+                        <p class="item_add">
+                            To add an item simply click on any list icon:
+                            <a href="#" class="item_icon">
+                                <img src="<?php echo $this->getSkinUrl("images/cart_little.png");?>" alt="" />
+                            </a>
+                        </p>
+                    </div>
+                    <div class="have-product" <?php if($subTotal>0 && $count_tot_item>0){ echo 'style="display:block;"';}else{ echo 'style="display:none;"'; }  ?>>
+                            <div class="slider-nav-cart">
+                               <span id="prev_cart"></span>
+                               <span id="next_cart"></span>
+                           </div>
+                           <ul class="foot-productbox" id="footer_slider_cart">
+                               <?php
+                                   foreach($session->getQuote()->getAllItems() as $item)
+                                   {
+                                        if($item->getPrice()>0)
+                                        {
+                               ?>
+                               
+                                                <li>
+                                                    <div class="pic">
+                                                        <?php
+                                                        
+                                                            $_newProduct = Mage::getModel('catalog/product')->load($item->getProductId());
+                                                            
+                                                        ?>
+                                                        <a href="<?php echo $_newProduct->getProductUrl(); ?>"><img src="<?php echo Mage::helper('catalog/image')->init($_newProduct, 'image')->resize(69); ?>" /></a>
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="det">
+                                                        <h1><a href="<?php echo $_newProduct->getProductUrl(); ?>"><?php echo  $item->getName(); ?></a></h1>
+                                                        <span><?php echo $item->getQty(); ?> x <?php echo Mage::helper('core')->currency($item->getPrice(), true, false);?></span>
+                                                    </div>
+                                                    <div class="link">
+                                                        <a class="det" href="<?php echo $_newProduct->getProductUrl(); ?>"><?php echo $this->__("Details"); ?></a>
+                                                        <a class="edt" href="<?php echo $_newProduct->getProductUrl(); ?>"><?php echo $this->__("Edit"); ?></a>
+                                                        <a class="del" href="<?php echo Mage::getUrl( 'checkout/cart/delete', array( 'id' => $item->getId() ) ); ?>"><?php echo $this->__("Delete"); ?></a>
+                                                    </div>
+                                                </li>
+                               <?php
+                                        }
+                                   }
+                               ?>
+                           </ul>
+                    </div>
+                    <div class="actions">
+                        <div class="cart_price">
+                            <?php echo $this->__("There are");?> <?php echo $cart_item_no; ?> <?php echo $this->__("items in your cart");?>
+                            <span><?php echo $this->__("Cart Subtotal:");?> <?php echo Mage::helper('core')->currency($subTotal, true, false); ?> </span>
+                        </div>
+                        <ul class="add-to-links">
+                            <li>
+                                <a href="<?php if($subTotal>0 && $cart_item_no>0){ echo Mage::getUrl('checkout/onepage/'); }else{ echo "javascript:void(0);"; } ?>" class="chekout"> Chekout </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!--Cart section end-->
+                
+                
+                
+            </ul>
+</div>

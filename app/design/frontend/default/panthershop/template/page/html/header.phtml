@@ -1,0 +1,248 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<?php
+/*
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+        <div class="quick-access">
+            <?php echo $this->getChildHtml('topSearch') ?>
+            <p class="welcome-msg"><?php echo $this->getWelcome() ?> <?php echo $this->getAdditionalHtml() ?></p>
+            <?php echo $this->getChildHtml('topLinks') ?>
+            <?php echo $this->getChildHtml('store_language') ?>
+        </div>
+        <?php echo $this->getChildHtml('topContainer'); ?>
+    </div>
+</div>
+<?php echo $this->getChildHtml('topMenu') ?>
+*/?>
+
+<?php
+        
+        if(Mage::getSingleton('customer/session')->isLoggedIn())
+        {
+            $_grand_of_current_customer=0;
+            $_grand_of_normal_price=0;
+            
+            
+            
+            $customerData = Mage::getSingleton('customer/session')->getCustomer();
+            //echo $customerData->getId();
+            $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId(); 
+             
+            
+            $orderCollection = Mage::getModel('sales/order')->getCollection()
+            ->addFieldToFilter('customer_id', array('eq' => array($customerData->getId())));
+            
+            foreach($orderCollection AS $order_row)
+            {
+                    //$order_row->getId()."<br><br>";
+                    $order = Mage::getModel('sales/order')->load($order_row->getId());
+                    $_grand_of_current_customer=$_grand_of_current_customer+$order->getSubtotal();
+                    foreach ($order->getAllItems() as $itemId => $item)
+                    {
+                      $_newProduct = Mage::getModel('catalog/product')->load($item->getProductId());
+                      
+                      
+                      if($groupId==2 && $item->getPrice()>0)
+                      {
+                        $curr_pro_price=$_newProduct->getPrice();
+                      }
+                      else if($groupId==3 && $item->getPrice()>0)
+                      {
+                        $product = Mage::getModel('catalog/product')->load($item->getProductId());
+                        $groupPrices = $product->getData('group_price');
+                        
+                        $curr_pro_price=$groupPrices[0]["price"];
+                      }
+                       
+                        
+                        
+                        
+                        
+                      
+                      if($item->getPrice()>0)
+                      {
+                      
+                        $_grand_of_normal_price=$_grand_of_normal_price+($curr_pro_price*$item->getQtyToInvoice());
+                      }
+                    }
+            }
+            
+           
+            
+            if($groupId==2)
+            {
+               $total_savings=$_grand_of_normal_price-$_grand_of_current_customer;
+                
+            }
+            else if($groupId==3)
+            {
+               $total_savings=$_grand_of_current_customer-$_grand_of_normal_price; 
+            }
+            
+            
+     
+             
+        }
+        
+        
+       
+?>
+
+<div class="header-container">
+    <div class="header">
+        <h1 class="logo">
+            <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>">&nbsp;</a>
+            <!-- <strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a> -->
+        </h1>
+        <div class="official">
+            <img src="<?php echo $this->getSkinUrl("images/official.png");?>" alt="" />
+        </div>
+        <div class="quick-access">
+            <button class="nav-toggle" id="toggleResponsiveNav">Menu</button>
+
+<?php /* HIDING SSO HEADER CONTENT
+
+         <?php if(($this->helper('customer')->isLoggedIn())){?>
+            <p class="welcome-msg after_login">
+                
+                <span class="msg_one">
+                <?php
+                    if($groupId==2)
+                    {
+                ?>
+                            <?php
+                                echo $this->__("HELLO")." ".Mage::getSingleton('customer/session')->getCustomer()->getFirstname().". ".$this->__("AS A PANTHERS MEMBER");
+                            
+                            ?>
+                            </span>
+                            <span class="msg_two">
+                            <?php
+                                echo $this->__("YOU HAVE SAVED")." ".Mage::helper('core')->currency($total_savings, true, false)." ".$this->__("ON PURCHASES");
+                            ?>
+                            </span>
+                            
+                            <span class="msg_one_three">
+                                <?php
+                                    echo $this->__("THANKS FOR YOUR SUPPORT");
+                                ?>    
+                                
+                            </span>
+                <?php
+                    }
+                    else if($groupId==3)
+                    {
+                ?>
+                            <?php
+                                echo $this->__("HELLO")." ".Mage::getSingleton('customer/session')->getCustomer()->getFirstname().". ".$this->__("IF YOU WERE A PANTHERS MEMBER");                            
+                            ?>
+                            </span>
+                            <span class="msg_two">
+                            <?php
+                                echo $this->__("YOU COULD HAVE SAVED")." ".Mage::helper('core')->currency($total_savings, true, false)." ".$this->__("ON PURCHASES");
+                            ?>
+                            </span>
+                            
+                            <span class="msg_one_three">
+                                <?php
+                                    echo $this->__("BECOME A MEMBER TODAY");
+                                ?>    
+                                
+                            </span>
+                
+                <?php
+                    }
+                ?>
+                
+            </p>
+         <?php
+                }
+                else
+                {
+         ?>
+             <p class="welcome-msg">
+                <?php
+                    echo $this->__("SIGN IN AS A PANTHERS MEMBER");
+                
+                ?>
+                <span class="inner_span_msg">
+                    <?php
+                        echo $this->__("TO ACCESS HUGE SAVINGS STORE WIDE!");
+                    
+                    ?>    
+                    
+                </span>
+                
+            </p>
+         <?php
+                }
+         ?> 
+        
+            <ul class="links">
+                <?php if(($this->helper('customer')->isLoggedIn())){?>
+                    <li class="non_member first"> <a href="<?php echo $this->getUrl('customer/account/');?>"><?php echo $this->__('View Account Details') ?></a></li>
+                    <li class="log_all_out last"> <a href="<?php echo $this->getUrl('customer/account/logout/');?>"><?php echo $this->__('Logout') ?></a></li>
+                <?php
+                }
+                else
+                {
+                ?>
+                    <li class="non_member first"> <a href="<?php echo $this->getUrl('customer/account/login/');?>"><?php echo $this->__('Non-member Login') ?></a></li>
+                    <li class="panther_member last"> <a href="<?php echo $this->getUrl('salesforceconnect/');?>"><?php echo $this->__('Panthers Member Login') ?></a></li>
+                <?php
+                }
+                ?>                
+                
+            </ul>
+            <!--<div class="form-search">-->
+            <!--    <input id="search" type="text" value="Product Search..." class="input-text">-->
+            <!--    <button type="submit" title="Search" class="button"><span><span>Search</span></span></button> -->
+            <!--</div>-->
+
+END HIDE SSO HEADER CONTENT  */ ?>
+
+            <?php echo $this->getChildHtml('topSearch') ?>
+
+            <div class="sotial_media">
+                <ul class="sotial_media_ul">
+                    <li class="instagram"><a target="_blank" href="http://instagram.com/penrithpanthers/"></a></li>
+                    <li class="twiter"><a target="_blank" href="https://twitter.com/PenrithPanthers"></a></li>
+                    <li class="facebook"><a target="_blank" href="https://www.facebook.com/penrithpanthers"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>                
+</div>
+<?php echo $this->getChildHtml('topMenu') ?>

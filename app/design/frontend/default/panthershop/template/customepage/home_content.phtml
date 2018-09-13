@@ -1,0 +1,423 @@
+
+<div class="banner_area">
+    <div class="banner">
+        <!--Home banner start-->
+        <div class="slider-nav">
+            <!--<span id="prev2"></span>-->
+            <!--<span id="next2"></span>-->
+        </div>
+
+        <ul class="slider-top" id="home_slider">
+
+            <!--banner extention slider image dynamic fetch start-->
+            <?php
+
+                    $collection = Mage::getModel('banner/banner')->getCollection();
+                    foreach ($collection as $col)
+                    {
+                        if($col->getStatus()==1)
+                        {
+
+            ?>
+
+                        <li><a class="banner_url" href="<?php echo $col->getUrl();?>"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) .$col->getfilename()?>" alt="Panther Shop" title="Panther Shop"  /></a></li>
+
+
+            <?php
+                        }
+                    }
+            ?>
+            <!--banner extention slider image dynamic fetch end-->
+
+
+        </ul>
+
+
+
+
+
+        <!--Home banner end-->
+    </div>
+    <div class="banner_right">
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('right_banner_image')->toHtml(); ?>
+    </div>
+</div>
+
+<?php
+
+    $visibility = array(
+        Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+        Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG
+    );
+
+    $Topselling_products = Mage::getModel('catalog/product')
+                                         ->getCollection()
+                                         ->addAttributeToFilter('status', 1)
+                                         ->addAttributeToFilter('visibility', $visibility)
+                                         //->setPageSize(4)
+                                         //->addAttributeToFilter('top_selling', 1)
+                                         //->load();
+                                         ;
+
+    $Topselling_products->getSelect()->order('rand()');
+    $Topselling_products->getSelect()->limit(4);
+
+?>
+
+
+
+<div class="category-products">
+    <div class="category-title">
+        <h1>TOP SELLING</h1>
+
+    </div>
+    <ul class="products-grid first odd">
+
+        <!--Start of displaying top selling product-->
+
+        <?php
+            $_helper = $this->helper('catalog/output');
+
+            $tot_cnt=count($Topselling_products);
+
+            $c_cnt=0;
+
+            foreach($Topselling_products as $Topselling_product)
+            {
+                $c_cnt++;
+
+                $Topselling_product = Mage::getModel('catalog/product')->load($Topselling_product->getId());
+
+                if($c_cnt==1)
+                {
+                    $extra_cl="first";
+                }
+                else if($c_cnt==$tot_cnt)
+                {
+                    $extra_cl="last";
+
+                }
+                else
+                {
+                    $extra_cl="";
+                }
+
+
+        ?>
+                <li class="item <?php echo $extra_cl; ?>">
+                    <?php
+                       if($Topselling_product->getSpecialPrice()!="")
+                       {
+                    ?>
+                            <div class="spi_cl_pro"></div>
+                    <?php
+                       }
+                    ?>
+
+                    <a href="<?php echo $Topselling_product->getProductUrl() ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($Topselling_product, 'small_image')->resize(248); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($Topselling_product, 'small_image'), null, true) ?>" /></a>
+                    <h2 class="product-name"><a href="<?php echo $Topselling_product->getProductUrl() ?>"><?php echo $Topselling_product->getName();?></a></h2>
+                    <div class="desc">
+                        <p><?php echo $Topselling_product->getShortDescription();?></p>
+                        <a href="<?php echo $Topselling_product->getProductUrl() ?>" class="link-learn">Read More</a>
+                    </div>
+
+                        <?php echo $this->getPriceHtml($Topselling_product, true) ?>
+                        <div class="mem_price">
+                            <p class="mem">
+
+                                <?php
+                                    $_coreHelper = $this->helper('core');
+
+
+                                    $product = Mage::getModel('catalog/product')->load($Topselling_product->getId());
+                                    $groupPrices = $product->getData('group_price');
+                                    //print_r($groupPrices);
+                                    if($groupPrices[0]["price"]!="")
+                                    {
+                                        echo $this->__("MEMBERS ");
+                                        echo $_coreHelper->currency($groupPrices[0]["price"], true, true);
+                                    }
+
+                                ?>
+                            </p>
+                        </div>
+
+                    <div class="actions">
+                        <ul class="add-to-links">
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($Topselling_product); ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                            <?php
+
+                                if($_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($Topselling_product)):
+                            ?>
+                                <li><a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                            <?php
+                                endif;
+                            ?>
+                        </ul>
+                        <button type="button" class="button btn-cart" title="<?php echo $this->__('Add to Cart') ?>" onclick="setLocation('<?php echo $this->helper("checkout/cart")->getAddUrl($Topselling_product); ?>')">
+                            <span>
+                                <span><?php echo $this->__('Add to Cart') ?></span>
+                            </span>
+                        </button>
+                    </div>
+                </li>
+        <?php
+            }
+        ?>
+        <!--End of displaying top selling product-->
+
+
+
+        <?php /*<li class="item">
+            <a href="#" class="product-image"><img src="<?php echo $this->getSkinUrl('images/1.png');?>" alt="" /></a>
+            <h2 class="product-name"><a href="#">PRODUCT NAME</a></h2>
+            <div class="desc">
+                <p>Frist Line Description</p>
+                <p> Second Line Description</p>
+                <a href="#" class="link-learn">Read More</a>
+            </div>
+            <div class="price-box">
+                <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price" id="old-price-52">$129.99</span>
+                </p>
+                <p class="special-price">
+                    <span class="price-label">Members:</span>
+                    <span class="price" id="product-price-52"> $99.99</span>
+                </p>
+            </div>
+            <div class="actions">
+                <ul class="add-to-links">
+                    <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                    <li><a href="#" class="link-compare">Add to Compare</a></li>
+                </ul>
+                <button type="button" class="button btn-cart">
+                    <span>
+                        <span>Add to Cart</span>
+                    </span>
+                </button>
+            </div>
+        </li>
+        <li class="item">
+            <a href="#" class="product-image"><img src="<?php echo $this->getSkinUrl('images/1.png');?>" alt="" /></a>
+            <h2 class="product-name"><a href="#">PRODUCT NAME</a></h2>
+            <div class="desc">
+                <p>Frist Line Description</p>
+                <p> Second Line Description</p>
+                <a href="#" class="link-learn">Read More</a>
+            </div>
+            <div class="price-box">
+                <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price" id="old-price-52">$129.99</span>
+                </p>
+                <p class="special-price">
+                    <span class="price-label">Members:</span>
+                    <span class="price" id="product-price-52"> $99.99</span>
+                </p>
+            </div>
+            <div class="actions">
+                <ul class="add-to-links">
+                    <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                    <li><a href="#" class="link-compare">Add to Compare</a></li>
+                </ul>
+                <button type="button" class="button btn-cart">
+                    <span>
+                        <span>Add to Cart</span>
+                    </span>
+                </button>
+            </div>
+        </li>
+        <li class="item last">
+            <a href="#" class="product-image"><img src="<?php echo $this->getSkinUrl('images/1.png');?>" alt="" /></a>
+            <h2 class="product-name"><a href="#">PRODUCT NAME</a></h2>
+            <div class="desc">
+                <p>Frist Line Description</p>
+                <p> Second Line Description</p>
+                <a href="#" class="link-learn">Read More</a>
+            </div>
+            <div class="price-box">
+                <p class="old-price">
+                    <span class="price-label">Regular Price:</span>
+                    <span class="price" id="old-price-52">$129.99</span>
+                </p>
+                <p class="special-price">
+                    <span class="price-label">Members:</span>
+                    <span class="price" id="product-price-52"> $99.99</span>
+                </p>
+            </div>
+            <div class="actions">
+                <ul class="add-to-links">
+                    <li><a href="#" class="link-wishlist">Add to Wishlist</a></li>
+                    <li><a href="#" class="link-compare">Add to Compare</a></li>
+                </ul>
+                <button type="button" class="button btn-cart">
+                    <span>
+                        <span>Add to Cart</span>
+                    </span>
+                </button>
+            </div>
+        </li>*/?>
+    </ul>
+</div>
+
+
+<div class="section_position_1">
+  <div class="adsareahome"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('ads-banner-home')->toHtml(); ?></div>
+   <?php /*
+    <h1 class="panther_hadding">PANTHER MEMBERSHIP PACKAGES</h1>
+    <div class="slider-nav-plan">
+        <span id="prev22"></span>
+        <span id="next22"></span>
+    </div>
+
+    <ul class="slider-top-plan" id="home_slider_membership">
+        <!--membershippackage extention slider image dynamic fetch start-->
+        <?php
+
+                $collection = Mage::getModel('membershippackage/membershippackage')->getCollection();
+                foreach ($collection as $col)
+                {
+                    if($col->getStatus()==1)
+                    {
+
+        ?>
+
+                     <li>
+                        <div class="inner_item">
+                            <h1><a target="_blank" href="<?php echo $col->getUrl();?>"><?php echo $col->getTitle();?></a></h1>
+                            <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                            <a target="_blank" href="<?php echo $col->getUrl();?>" class="packageimg">
+                                <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) .$col->getfilename()?>" alt="" />
+                            </a>
+                        </div>
+                    </li>
+
+
+
+
+        <?php
+                    }
+                }
+        ?>
+        <!--membershippackage extention slider image dynamic fetch end-->
+
+        <?php
+            /*
+        ?>
+
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5655">Ultimate Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5655" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/ultimate.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5656">Diamond Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5656" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/diamond1.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5657">Platinum Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5657" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/platinum.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5658">Ultimate Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5658" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/gold.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5659">Diamond Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5659" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/silver.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5661">Platinum Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5661" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/bronze.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5662">Ultimate Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5662" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/panther_den.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5667">Diamond Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5667" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/6-game-flexi.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5688">Platinum Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5688" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/proud-panther.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5664">Platinum Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5664" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/qld_panther.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5668">Platinum Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5668" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/prowl_bay.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="inner_item">
+                <h1><a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5665">Platinum Membership</a></h1>
+                <img class="hiddenImage" src="<?php echo $this->getSkinUrl("images/glow_img.png");?>" alt="" />
+                <a target="_blank" href="https://nrl.secure.force.com/nrlpanthers/showPackageToAnonymous?clubid=98&p=5665" class="packageimg">
+                    <img src="<?php echo $this->getSkinUrl("images/out_of_towner.png");?>" alt="" />
+                </a>
+            </div>
+        </li>
+        <?php
+            */
+        ?><?php /*
+    </ul>
+ */?>
+
+</div>

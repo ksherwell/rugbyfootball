@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <contacts_index_index>
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/miragedesign/custom.css</stylesheet></action>
+        </reference>
+        <reference name="content">
+            <action method="unsetChild"><name>contactForm</name></action>
+            <block type="contactcustomiser/contacts" name="contactForm" template="miragedesign/contacts/form.phtml"/>
+        </reference>
+    </contacts_index_index>
+</layout>

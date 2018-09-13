@@ -1,0 +1,116 @@
+<?php
+
+class Artis_Membershippackage_Block_Adminhtml_Membershippackage_Grid extends Mage_Adminhtml_Block_Widget_Grid
+{
+  public function __construct()
+  {
+      parent::__construct();
+      $this->setId('membershippackageGrid');
+      $this->setDefaultSort('membershippackage_id');
+      $this->setDefaultDir('ASC');
+      $this->setSaveParametersInSession(true);
+  }
+
+  protected function _prepareCollection()
+  {
+      $collection = Mage::getModel('membershippackage/membershippackage')->getCollection();
+      $this->setCollection($collection);
+      return parent::_prepareCollection();
+  }
+
+  protected function _prepareColumns()
+  {
+      $this->addColumn('membershippackage_id', array(
+          'header'    => Mage::helper('membershippackage')->__('ID'),
+          'align'     =>'right',
+          'width'     => '50px',
+          'index'     => 'membershippackage_id',
+      ));
+
+      $this->addColumn('title', array(
+          'header'    => Mage::helper('membershippackage')->__('Title'),
+          'align'     =>'left',
+          'index'     => 'title',
+      ));
+
+	  /*
+      $this->addColumn('content', array(
+			'header'    => Mage::helper('membershippackage')->__('Item Content'),
+			'width'     => '150px',
+			'index'     => 'content',
+      ));
+	  */
+
+      $this->addColumn('status', array(
+          'header'    => Mage::helper('membershippackage')->__('Status'),
+          'align'     => 'left',
+          'width'     => '80px',
+          'index'     => 'status',
+          'type'      => 'options',
+          'options'   => array(
+              1 => 'Enabled',
+              2 => 'Disabled',
+          ),
+      ));
+	  
+        $this->addColumn('action',
+            array(
+                'header'    =>  Mage::helper('membershippackage')->__('Action'),
+                'width'     => '100',
+                'type'      => 'action',
+                'getter'    => 'getId',
+                'actions'   => array(
+                    array(
+                        'caption'   => Mage::helper('membershippackage')->__('Edit'),
+                        'url'       => array('base'=> '*/*/edit'),
+                        'field'     => 'id'
+                    )
+                ),
+                'filter'    => false,
+                'sortable'  => false,
+                'index'     => 'stores',
+                'is_system' => true,
+        ));
+		
+		$this->addExportType('*/*/exportCsv', Mage::helper('membershippackage')->__('CSV'));
+		$this->addExportType('*/*/exportXml', Mage::helper('membershippackage')->__('XML'));
+	  
+      return parent::_prepareColumns();
+  }
+
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('membershippackage_id');
+        $this->getMassactionBlock()->setFormFieldName('membershippackage');
+
+        $this->getMassactionBlock()->addItem('delete', array(
+             'label'    => Mage::helper('membershippackage')->__('Delete'),
+             'url'      => $this->getUrl('*/*/massDelete'),
+             'confirm'  => Mage::helper('membershippackage')->__('Are you sure?')
+        ));
+
+        $statuses = Mage::getSingleton('membershippackage/status')->getOptionArray();
+
+        array_unshift($statuses, array('label'=>'', 'value'=>''));
+        $this->getMassactionBlock()->addItem('status', array(
+             'label'=> Mage::helper('membershippackage')->__('Change status'),
+             'url'  => $this->getUrl('*/*/massStatus', array('_current'=>true)),
+             'additional' => array(
+                    'visibility' => array(
+                         'name' => 'status',
+                         'type' => 'select',
+                         'class' => 'required-entry',
+                         'label' => Mage::helper('membershippackage')->__('Status'),
+                         'values' => $statuses
+                     )
+             )
+        ));
+        return $this;
+    }
+
+  public function getRowUrl($row)
+  {
+      return $this->getUrl('*/*/edit', array('id' => $row->getId()));
+  }
+
+}
